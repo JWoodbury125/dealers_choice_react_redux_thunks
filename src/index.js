@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -7,13 +8,28 @@ class App extends React.Component {
 
     this.state = {
       members: [],
-      dues: [],
     };
   }
+
+  async componentDidMount() {
+    const response = await axios.get("/members");
+    this.setState({ members: response.data });
+    console.log(this.state);
+  }
+
   render() {
+    const members = this.state.members;
     return (
       <div>
-        <hr></hr>
+        <ul>
+          {members.map((member) => {
+            return (
+              <li key={member.id}>
+                {member.firstName} {member.lastName}
+              </li>
+            );
+          })}
+        </ul>
       </div>
     );
   }
